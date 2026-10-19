@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 
 #define MAX_TITULOS 3
 #define TAM_TEXTO 120
@@ -37,76 +36,6 @@ int disponibilidadeTitulo(
     int qtdEstoque
 );
 
-int main() {
-
-    int codigos[MAX_TITULOS] = {0};
-    int estoques[MAX_TITULOS] = {0};
-    char descricao1[TAM_TEXTO];
-    char descricao2[TAM_TEXTO];
-    char descricao3[TAM_TEXTO];
-    int qtdTitulos = 0, qtdExemplares = 0, codigoBuscado, posBusca, disponivel;
-
-    while (qtdTitulos < MAX_TITULOS) {
-        qtdTitulos = cadastrarTitulo(
-            codigos,
-            estoques,
-            descricao1,
-            descricao2,
-            descricao3,
-            qtdTitulos
-        );
-    }
-
-    listarTitulos(
-        codigos,
-        estoques,
-        descricao1,
-        descricao2,
-        descricao3,
-        qtdTitulos
-    );
-
-    printf("\nDigite o codigo do titulo que deseja buscar: ");
-    scanf("%d", &codigoBuscado);
-
-    posBusca = buscarTitulo(
-        codigos,
-        qtdTitulos,
-        codigoBuscado
-    );
-
-    if (posBusca == -1) {
-        printf("Titulo nao encontrado no acervo.\n");
-    } else {
-        if (posBusca == 0) {
-            printf("Titulo encontrado: %s\n", descricao1);
-        } else if (posBusca == 1) {
-            printf("Titulo encontrado: %s\n", descricao2);
-        } else {
-            printf("Titulo encontrado: %s\n", descricao3);
-        }
-
-        disponivel = disponibilidadeTitulo(
-            estoques[posBusca]
-        );
-
-        if (disponivel == 1) {
-            printf("Titulo disponivel! Quantidade em estoque: %d\n", estoques[posBusca]);
-        } else {
-            printf("Titulo temporariamente indisponivel.\n");
-        }
-    }
-
-    qtdExemplares = calcularQtdExemplares(
-        estoques,
-        qtdTitulos
-    );
-
-    printf("\nTotal de exemplares no acervo: %d\n", qtdExemplares);
-
-    return 0;
-}
-
 int cadastrarTitulo(
     int codigos[],
     int estoques[],
@@ -115,44 +44,42 @@ int cadastrarTitulo(
     char descricao3[],
     int qtdTitulos
 ) {
-    int codigoTemp, estoqueTemp;
+    int codTemporario, estoTemporario;
 
-    printf("Digite o codigo do titulo %d: ", qtdTitulos + 1);
-    scanf("%d", &codigoTemp);
+    printf("Codigo do titulo: ");
+    scanf("%d", &codTemporario);
 
-    while (codigoTemp < 0 || buscarTitulo(codigos, qtdTitulos, codigoTemp) != -1) {
-        if (codigoTemp < 0) {
-            printf("Codigo invalido (nao pode ser negativo). Digite novamente: ");
+    while (codTemporario <= 0 || buscarTitulo(codigos, qtdTitulos, codTemporario) != -1) {
+        if (codTemporario <= 0) {
+            printf("Codigo invalido, digite de novo: ");
         } else {
-            printf("Codigo ja cadastrado. Digite outro codigo: ");
+            printf("Esse codigo ja existe, digite outro: ");
         }
-        scanf("%d", &codigoTemp);
+        scanf("%d", &codTemporario);
     }
 
-    printf("Digite a quantidade em estoque para o codigo %d: ", codigoTemp);
-    scanf("%d", &estoqueTemp);
+    printf("Estoque: ");
+    scanf("%d", &estoTemporario);
 
-    while (estoqueTemp < 0) {
-        printf("Estoque invalido (nao pode ser negativo). Digite novamente: ");
-        scanf("%d", &estoqueTemp);
+    while (estoTemporario < 0) {
+        printf("Estoque invalido, digite de novo: ");
+        scanf("%d", &estoTemporario);
     }
 
-    while (getchar() != '\n');
+    // pesquisei e achei melhor usar o getchar pra tirar o enter que sobra do scanf antes do fgets
+    getchar();
 
-    printf("Digite a descricao do titulo (Titulo; Autor; Ano; Tema): ");
+    printf("Descricao (titulo; autor; ano; tema): ");
     if (qtdTitulos == 0) {
         fgets(descricao1, TAM_TEXTO, stdin);
-        descricao1[strcspn(descricao1, "\n")] = '\0';
     } else if (qtdTitulos == 1) {
         fgets(descricao2, TAM_TEXTO, stdin);
-        descricao2[strcspn(descricao2, "\n")] = '\0';
     } else {
         fgets(descricao3, TAM_TEXTO, stdin);
-        descricao3[strcspn(descricao3, "\n")] = '\0';
     }
 
-    codigos[qtdTitulos] = codigoTemp;
-    estoques[qtdTitulos] = estoqueTemp;
+    codigos[qtdTitulos] = codTemporario;
+    estoques[qtdTitulos] = estoTemporario;
 
     qtdTitulos++;
 
@@ -169,14 +96,14 @@ void listarTitulos(
 ) {
     int i;
 
-    printf("\n--- Acervo cadastrado ---\n");
+    printf("\nTitulos:\n");
     for (i = 0; i < qtdTitulos; i++) {
         if (i == 0) {
-            printf("Codigo: %d | %s | Estoque: %d\n", codigos[i], descricao1, estoques[i]);
+            printf("%d - estoque %d - %s", codigos[i], estoques[i], descricao1);
         } else if (i == 1) {
-            printf("Codigo: %d | %s | Estoque: %d\n", codigos[i], descricao2, estoques[i]);
+            printf("%d - estoque %d - %s", codigos[i], estoques[i], descricao2);
         } else {
-            printf("Codigo: %d | %s | Estoque: %d\n", codigos[i], descricao3, estoques[i]);
+            printf("%d - estoque %d - %s", codigos[i], estoques[i], descricao3);
         }
     }
 }
@@ -186,15 +113,16 @@ int buscarTitulo(
     int qtdTitulos,
     int codigoBuscado
 ) {
-    int i;
+    int i, posicao;
 
+    posicao = -1;
     for (i = 0; i < qtdTitulos; i++) {
         if (codigos[i] == codigoBuscado) {
-            return i;
+            posicao = i;
         }
     }
 
-    return -1;
+    return posicao;
 }
 
 int calcularQtdExemplares(
@@ -204,7 +132,7 @@ int calcularQtdExemplares(
     int i, qtdExemplares = 0;
 
     for (i = 0; i < qtdTitulos; i++) {
-        qtdExemplares += estoques[i];
+        qtdExemplares = qtdExemplares + estoques[i];
     }
 
     return qtdExemplares;
@@ -215,7 +143,54 @@ int disponibilidadeTitulo(
 ) {
     if (qtdEstoque > 0) {
         return 1;
+    } else {
+        return 0;
     }
+}
+
+int main() {
+
+    int codigos[MAX_TITULOS];
+    int estoques[MAX_TITULOS];
+    char descricao1[TAM_TEXTO];
+    char descricao2[TAM_TEXTO];
+    char descricao3[TAM_TEXTO];
+    int qtdTitulos = 0, qtdExemplares, codigoBuscado, posBusca, disponivel;
+
+    while (qtdTitulos < MAX_TITULOS) {
+        qtdTitulos = cadastrarTitulo(codigos, estoques, descricao1, descricao2, descricao3, qtdTitulos);
+    }
+
+    listarTitulos(codigos, estoques, descricao1, descricao2, descricao3, qtdTitulos);
+
+    printf("\nCodigo para buscar: ");
+    scanf("%d", &codigoBuscado);
+
+    posBusca = buscarTitulo(codigos, qtdTitulos, codigoBuscado);
+
+    if (posBusca == -1) {
+        printf("Titulo nao encontrado\n");
+    } else {
+        if (posBusca == 0) {
+            printf("Titulo: %s", descricao1);
+        } else if (posBusca == 1) {
+            printf("Titulo: %s", descricao2);
+        } else {
+            printf("Titulo: %s", descricao3);
+        }
+
+        disponivel = disponibilidadeTitulo(estoques[posBusca]);
+
+        if (disponivel == 1) {
+            printf("Titulo disponivel, estoque: %d\n", estoques[posBusca]);
+        } else {
+            printf("Titulo temporariamente indisponivel\n");
+        }
+    }
+
+    qtdExemplares = calcularQtdExemplares(estoques, qtdTitulos);
+
+    printf("\nTotal: %d\n", qtdExemplares);
 
     return 0;
 }
