@@ -2,7 +2,7 @@
 
 Projeto feito durante as aulas de Sistemas de Informação na PUC-Campinas para praticar lógica de programação em C, simulando o cadastro de livros em uma biblioteca.
 
-O mesmo sistema é desenvolvido em várias versões. Cada versão acrescenta um conteúdo novo da disciplina e reaproveita o que já funcionava na anterior. O roteiro completo está no arquivo `Sistema de Biblioteca - Aulas Proramacao v1-3.pdf`.
+O mesmo sistema é desenvolvido em várias versões. Cada versão acrescenta um conteúdo novo da disciplina e reaproveita o que já funcionava na anterior. O roteiro das versões 1 a 3 está no arquivo `Sistema de Biblioteca - Aulas Proramacao v1-3.pdf`. A versão 4 segue o que o roteiro antecipa sobre structs.
 
 ## Versões
 
@@ -11,6 +11,7 @@ O mesmo sistema é desenvolvido em várias versões. Cada versão acrescenta um 
 | 1 | `v1.c` | Vetores e repetições | Cadastra códigos e estoques, lista o acervo, calcula o total de exemplares e busca um livro pelo código |
 | 2 | `v2.c` | Strings | Guarda e mostra uma descrição para cada livro (título, autor, ano e tema) |
 | 3 | `v3.c` | Funções | Separa cadastro, listagem, busca, total de exemplares e disponibilidade em funções |
+| 4 | `v4.c` | Structs | Reúne código, estoque e descrição de cada livro em uma struct `Livro`, acabando com as três descrições separadas |
 
 ## Regras do sistema
 
