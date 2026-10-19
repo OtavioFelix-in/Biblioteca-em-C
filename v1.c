@@ -1,82 +1,82 @@
 #include <stdio.h>
 
-#define MAX_TITULOS 3
+#define MAX_LIVROS 3
 
 int main() {
 
-    int codigos[MAX_TITULOS] = {0};
-    int estoques[MAX_TITULOS] = {0};
-    int qtdTitulos = 0, codigoTemp, estoqueTemp, repetido, i, qtdExemplares = 0, codigoBusca, posBusca;
+    int codigos[MAX_LIVROS];
+    int estoques[MAX_LIVROS];
+    int qtdLivros = 0, codTemporario, estoTemporario, repetido, i, qtdExemplares = 0, codigoBusca, posBusca;
 
-    while (qtdTitulos < MAX_TITULOS) {
+    while (qtdLivros < MAX_LIVROS) {
 
         repetido = 0;
 
-        printf("Digite o codigo do titulo %d: ", qtdTitulos + 1);
-        scanf("%d", &codigoTemp);
+        printf("Codigo do livro: ");
+        scanf("%d", &codTemporario);
 
-        for (i = 0; i < qtdTitulos; i++) {
-            if (codigos[i] == codigoTemp) {
+        for (i = 0; i < qtdLivros; i++) {
+            if (codigos[i] == codTemporario) {
                 repetido = 1;
             }
         }
 
-        while (codigoTemp < 0 || repetido == 1) {
-            if (codigoTemp < 0) {
-                printf("Codigo invalido (nao pode ser negativo). Digite novamente: ");
+        while (codTemporario <= 0 || repetido == 1) {
+            if (codTemporario <= 0) {
+                printf("Codigo invalido, digite de novo: ");
             } else {
-                printf("Codigo ja cadastrado. Digite outro codigo: ");
+                printf("Esse codigo ja existe, digite outro: ");
             }
-            scanf("%d", &codigoTemp);
+            scanf("%d", &codTemporario);
 
             repetido = 0;
-            for (i = 0; i < qtdTitulos; i++) {
-                if (codigos[i] == codigoTemp) {
+            for (i = 0; i < qtdLivros; i++) {
+                if (codigos[i] == codTemporario) {
                     repetido = 1;
                 }
             }
         }
 
-        codigos[qtdTitulos] = codigoTemp;
+        codigos[qtdLivros] = codTemporario;
 
-        printf("Digite a quantidade em estoque para o codigo %d: ", codigoTemp);
-        scanf("%d", &estoqueTemp);
+        printf("Estoque: ");
+        scanf("%d", &estoTemporario);
 
-        while (estoqueTemp < 0) {
-            printf("Estoque invalido (nao pode ser negativo). Digite novamente: ");
-            scanf("%d", &estoqueTemp);
+        while (estoTemporario < 0) {
+            printf("Estoque invalido, digite de novo: ");
+            scanf("%d", &estoTemporario);
         }
 
-        estoques[qtdTitulos] = estoqueTemp;
+        estoques[qtdLivros] = estoTemporario;
 
-        qtdTitulos++;
+        qtdLivros++;
     }
 
-    printf("\n--- Acervo cadastrado ---\n");
-    for (i = 0; i < qtdTitulos; i++) {
-        printf("Codigo: %d | Estoque: %d\n", codigos[i], estoques[i]);
-        qtdExemplares += estoques[i];
+    printf("\nLivros:\n");
+    for (i = 0; i < qtdLivros; i++) {
+        printf("%d - estoque %d\n", codigos[i], estoques[i]);
+        qtdExemplares = qtdExemplares + estoques[i];
     }
 
-    printf("Total de exemplares no acervo: %d\n", qtdExemplares);
+    printf("Total: %d\n", qtdExemplares);
 
-    printf("\nDigite o codigo do titulo que deseja buscar: ");
+    printf("\nCodigo para buscar: ");
     scanf("%d", &codigoBusca);
 
     posBusca = -1;
-    for (i = 0; i < qtdTitulos; i++) {
+    for (i = 0; i < qtdLivros; i++) {
         if (codigos[i] == codigoBusca) {
             posBusca = i;
         }
     }
 
     if (posBusca == -1) {
-        printf("Titulo nao encontrado no acervo.\n");
+        printf("Livro nao encontrado\n");
     } else {
         if (estoques[posBusca] == 0) {
-            printf("Titulo encontrado, porem esta temporariamente indisponivel.\n");
+            printf("Livro indisponivel\n");
         } else {
-            printf("Titulo disponivel! Quantidade em estoque: %d\n", estoques[posBusca]);
+            printf("Livro disponivel, estoque: %d\n", estoques[posBusca]);
         }
     }
 
