@@ -12,6 +12,8 @@ O mesmo sistema é desenvolvido em várias versões. Cada versão acrescenta um 
 | 2 | `v2.c` | Strings | Guarda e mostra uma descrição para cada livro (título, autor, ano e tema) |
 | 3 | `v3.c` | Funções | Separa cadastro, listagem, busca, total de exemplares e disponibilidade em funções |
 | 4 | `v4.c` | Structs | Reúne código, estoque e descrição de cada livro em uma struct `Livro`, acabando com as três descrições separadas |
+| 5 | `v5.c` | Ponteiros | Cria a struct `Usuario` e passa livros e usuários por endereço para alterar o estoque e registrar ou encerrar um empréstimo |
+| 6 | `v6.c` | Integração | Menu para cadastrar livros e usuários, listar, buscar, emprestar e devolver, com as regras completas |
 
 ## Regras do sistema
 
@@ -20,6 +22,8 @@ O mesmo sistema é desenvolvido em várias versões. Cada versão acrescenta um 
 - O estoque não pode ser negativo.
 - A descrição do livro é informada em uma única linha de até 120 caracteres, separando as informações por ponto e vírgula. Exemplo: `O Hobbit; J. R. R. Tolkien; 1937; Fantasia`
 - Um livro com estoque maior que zero está disponível; com estoque igual a zero, está indisponível.
+- A partir da versão 5 existem até 3 usuários, com código inteiro, positivo e único. Cada usuário pode ficar com no máximo um livro emprestado por vez (`-1` indica nenhum).
+- Na versão 6, o empréstimo diminui o estoque e registra o livro no usuário; a devolução faz o inverso. Se qualquer regra falhar, nada é alterado.
 
 ## Tecnologias
 
