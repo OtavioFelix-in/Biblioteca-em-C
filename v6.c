@@ -5,41 +5,41 @@
 #define TAM_TEXTO 120
 #define SEM_EMPRESTIMO -1
 
-struct Livro {
+typedef struct {
     int codigo;
     char descricao[TAM_TEXTO];
     int estoque;
-};
+} Livro;
 
-struct Usuario {
+typedef struct {
     int codigo;
     char dados[TAM_TEXTO];
     int codigoLivroEmprestado;
-};
+} Usuario;
 
 int cadastrarTitulo(
-    struct Livro livros[],
+    Livro livros[],
     int qtdTitulos
 );
 
 int cadastrarUsuario(
-    struct Usuario usuarios[],
+    Usuario usuarios[],
     int qtdUsuarios
 );
 
 void listarTitulos(
-    struct Livro livros[],
+    Livro livros[],
     int qtdTitulos
 );
 
 int buscarLivro(
-    struct Livro livros[],
+    Livro livros[],
     int qtdTitulos,
     int codigoBuscado
 );
 
 int buscarUsuario(
-    struct Usuario usuarios[],
+    Usuario usuarios[],
     int qtdUsuarios,
     int codigoBuscado
 );
@@ -49,31 +49,31 @@ int disponibilidadeTitulo(
 );
 
 void alterarEstoque(
-    struct Livro *livro,
+    Livro *livro,
     int valor
 );
 
 void registrarEmprestimo(
-    struct Usuario *usuario,
+    Usuario *usuario,
     int codigoLivro
 );
 
 void encerrarEmprestimo(
-    struct Usuario *usuario
+    Usuario *usuario
 );
 
 int emprestarLivro(
-    struct Livro *livro,
-    struct Usuario *usuario
+    Livro *livro,
+    Usuario *usuario
 );
 
 int devolverLivro(
-    struct Livro *livro,
-    struct Usuario *usuario
+    Livro *livro,
+    Usuario *usuario
 );
 
 int cadastrarTitulo(
-    struct Livro livros[],
+    Livro livros[],
     int qtdTitulos
 ) {
     int codTemporario, estoTemporario;
@@ -121,7 +121,7 @@ int cadastrarTitulo(
 }
 
 int cadastrarUsuario(
-    struct Usuario usuarios[],
+    Usuario usuarios[],
     int qtdUsuarios
 ) {
     int codTemporario;
@@ -160,7 +160,7 @@ int cadastrarUsuario(
 }
 
 void listarTitulos(
-    struct Livro livros[],
+    Livro livros[],
     int qtdTitulos
 ) {
     int i;
@@ -177,7 +177,7 @@ void listarTitulos(
 }
 
 int buscarLivro(
-    struct Livro livros[],
+    Livro livros[],
     int qtdTitulos,
     int codigoBuscado
 ) {
@@ -194,7 +194,7 @@ int buscarLivro(
 }
 
 int buscarUsuario(
-    struct Usuario usuarios[],
+    Usuario usuarios[],
     int qtdUsuarios,
     int codigoBuscado
 ) {
@@ -221,28 +221,28 @@ int disponibilidadeTitulo(
 }
 
 void alterarEstoque(
-    struct Livro *livro,
+    Livro *livro,
     int valor
 ) {
     livro->estoque = valor;
 }
 
 void registrarEmprestimo(
-    struct Usuario *usuario,
+    Usuario *usuario,
     int codigoLivro
 ) {
     usuario->codigoLivroEmprestado = codigoLivro;
 }
 
 void encerrarEmprestimo(
-    struct Usuario *usuario
+    Usuario *usuario
 ) {
     usuario->codigoLivroEmprestado = SEM_EMPRESTIMO;
 }
 
 int emprestarLivro(
-    struct Livro *livro,
-    struct Usuario *usuario
+    Livro *livro,
+    Usuario *usuario
 ) {
     // as duas mudancas so acontecem se todas as regras forem aprovadas
     if (disponibilidadeTitulo(livro->estoque) == 0) {
@@ -260,8 +260,8 @@ int emprestarLivro(
 }
 
 int devolverLivro(
-    struct Livro *livro,
-    struct Usuario *usuario
+    Livro *livro,
+    Usuario *usuario
 ) {
     if (usuario->codigoLivroEmprestado == SEM_EMPRESTIMO) {
         return 0;
@@ -279,8 +279,8 @@ int devolverLivro(
 
 int main() {
 
-    struct Livro livros[MAX_TITULOS];
-    struct Usuario usuarios[MAX_USUARIOS];
+    Livro livros[MAX_TITULOS];
+    Usuario usuarios[MAX_USUARIOS];
     int qtdTitulos = 0, qtdUsuarios = 0;
     int opcao = -1, codigoBuscado, codigoUsuario, indiceLivro, indiceUsuario;
 
